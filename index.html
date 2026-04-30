@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generador de Firmas — Unit Public Design</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     @font-face {
       font-family: 'EuclidSquare';
@@ -382,13 +383,13 @@
     </div>
 
     <div class="actions">
-      <button class="btn btn-primary" onclick="copySignature()">Copiar firma</button>
+      <button class="btn btn-primary" onclick="downloadPNG()">Descargar PNG</button>
       <button class="btn" onclick="copySignatureHTML()">Copiar HTML</button>
-      <span class="copy-feedback" id="copy-feedback">Copiado al portapapeles</span>
+      <span class="copy-feedback" id="copy-feedback"></span>
     </div>
 
     <p class="instructions">
-      Haz clic en <strong>Copiar firma</strong> y pégala directamente en la configuración de firma de tu cliente de correo (Gmail, Outlook, Apple Mail). Para clientes que acepten HTML, usa <strong>Copiar HTML</strong>.
+      <strong>Descargar PNG</strong> genera una imagen lista para usar. Para clientes de correo que acepten HTML (Gmail, Outlook, Apple Mail), usa <strong>Copiar HTML</strong>.
     </p>
   </main>
 
@@ -501,6 +502,27 @@
     </td>
   </tr>
 </table>`;
+  }
+
+  async function downloadPNG() {
+    const v = getValues();
+    const node = document.getElementById('sig-preview');
+    try {
+      const canvas = await html2canvas(node, {
+        scale: 3,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+        logging: false,
+      });
+      const link = document.createElement('a');
+      const slug = v.name.replace(/\s+/g, '-').toLowerCase() || 'firma-unit';
+      link.download = `firma-${slug}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showFeedback('PNG descargado');
+    } catch (e) {
+      showFeedback('Error al generar PNG');
+    }
   }
 
   async function copySignature() {
