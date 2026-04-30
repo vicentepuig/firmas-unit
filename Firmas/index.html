@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Firmas — Unit Public Design</title>
+  <style>
+    @font-face {
+      font-family: 'EuclidSquare';
+      src: url('fonts/EuclidSquare-Regular.otf') format('opentype');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'EuclidSquare';
+      src: url('fonts/EuclidSquare-Medium.otf') format('opentype');
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: 'EuclidSquare';
+      src: url('fonts/EuclidSquare-Semibold.otf') format('opentype');
+      font-weight: 600;
+    }
+    @font-face {
+      font-family: 'Reckless';
+      src: url('fonts/RecklessStandardM-TRIAL-Thin.otf') format('opentype');
+      font-weight: 100;
+    }
+    @font-face {
+      font-family: 'Reckless';
+      src: url('fonts/RecklessStandardM-TRIAL-Light.otf') format('opentype');
+      font-weight: 300;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-ink: #101725;
+      --color-name: #2B223A;
+      --color-bg: #f1f1f1;
+      --color-surface: #FFFFFF;
+      --color-border: #E2E0DB;
+      --color-accent: #101725;
+    }
+
+    body {
+      font-family: 'EuclidSquare', system-ui, sans-serif;
+      font-weight: 400;
+      background: var(--color-bg);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 32px 48px 24px;
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-surface);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    header img {
+      height: 28px;
+      width: auto;
+    }
+
+    header h1 {
+      font-family: 'EuclidSquare', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-ink);
+      opacity: 0.5;
+      letter-spacing: 0.02em;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      flex: 1;
+    }
+
+    /* FORM */
+    .form-panel {
+      background: var(--color-surface);
+      border-right: 1px solid var(--color-border);
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .form-panel h2 {
+      font-family: 'EuclidSquare', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+      opacity: 0.4;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+      opacity: 0.45;
+    }
+
+    .field input,
+    .field select {
+      font-family: 'EuclidSquare', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-ink);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      padding: 10px 0;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .field input::placeholder {
+      color: var(--color-ink);
+      opacity: 0.25;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-bottom-color: var(--color-ink);
+    }
+
+    .field select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23101725' stroke-opacity='0.4' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+      padding-right: 20px;
+    }
+
+    /* PREVIEW PANEL */
+    .preview-panel {
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .preview-panel h2 {
+      font-family: 'EuclidSquare', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+      opacity: 0.4;
+    }
+
+    .preview-wrapper {
+      background: white;
+      border: 1px solid var(--color-border);
+      padding: 40px 44px;
+      display: inline-block;
+      max-width: 600px;
+    }
+
+    /* SIGNATURE */
+    .sig {
+      display: table;
+      border-collapse: collapse;
+      font-family: 'EuclidSquare', Arial, Helvetica, sans-serif;
+    }
+
+    .sig-logo-cell {
+      display: table-cell;
+      vertical-align: middle;
+      padding-left: 28px;
+    }
+
+    .sig-logo-cell img {
+      display: block;
+      width: 96px;
+      height: auto;
+    }
+
+    .sig-info-cell {
+      display: table-cell;
+      vertical-align: middle;
+      padding-right: 28px;
+      border-right: 1px solid #9E9BB9;
+    }
+
+    .sig-name {
+      font-family: 'Reckless', Georgia, serif;
+      font-weight: 300;
+      font-size: 28px;
+      line-height: 1.15;
+      color: #2B223A;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .sig-meta {
+      font-family: 'EuclidSquare', Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #101725;
+      display: block;
+    }
+
+    .sig-meta-row {
+      display: block;
+      color: #101725;
+    }
+
+    .sig-dot {
+      display: inline-block;
+      margin: 0 6px;
+      opacity: 0.35;
+    }
+
+    .sig-email a {
+      color: #101725;
+      opacity: 0.8;
+      text-decoration: none;
+    }
+
+    /* COPY BUTTON */
+    .actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      max-width: 600px;
+    }
+
+    .btn {
+      font-family: 'EuclidSquare', sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      border: 1px solid var(--color-ink);
+      background: transparent;
+      color: var(--color-ink);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn:hover {
+      background: var(--color-ink);
+      color: white;
+    }
+
+    .btn-primary {
+      background: var(--color-ink);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #2B223A;
+      border-color: #2B223A;
+    }
+
+    .copy-feedback {
+      font-size: 12px;
+      color: var(--color-ink);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .copy-feedback.visible {
+      opacity: 0.5;
+    }
+
+    .instructions {
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--color-ink);
+      opacity: 0.45;
+      max-width: 480px;
+      border-top: 1px solid var(--color-border);
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="assets/logo-unit-horizontal.svg" alt="Unit Public Design" style="height:22px;width:auto;">
+  <h1>Generador de Firmas</h1>
+</header>
+
+<div class="layout">
+
+  <!-- FORM -->
+  <aside class="form-panel">
+    <h2>Datos</h2>
+
+    <div class="field">
+      <label>Persona</label>
+      <select id="inp-person">
+        <option value="">— Selecciona —</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Nombre completo</label>
+      <input type="text" id="inp-name" placeholder="María González" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label>Cargo</label>
+      <input type="text" id="inp-role" placeholder="Directora de Diseño" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label>Correo electrónico</label>
+      <input type="email" id="inp-email" placeholder="maria@unitpublicdesign.com" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label>País</label>
+      <select id="inp-country">
+        <option value="">— Selecciona —</option>
+        <option value="Argentina">Argentina</option>
+        <option value="Bolivia">Bolivia</option>
+        <option value="Brasil">Brasil</option>
+        <option value="Chile">Chile</option>
+        <option value="Colombia">Colombia</option>
+        <option value="Costa Rica">Costa Rica</option>
+        <option value="Cuba">Cuba</option>
+        <option value="Ecuador">Ecuador</option>
+        <option value="El Salvador">El Salvador</option>
+        <option value="España">España</option>
+        <option value="Guatemala">Guatemala</option>
+        <option value="Honduras">Honduras</option>
+        <option value="México">México</option>
+        <option value="Nicaragua">Nicaragua</option>
+        <option value="Panamá">Panamá</option>
+        <option value="Paraguay">Paraguay</option>
+        <option value="Perú">Perú</option>
+        <option value="República Dominicana">República Dominicana</option>
+        <option value="Uruguay">Uruguay</option>
+        <option value="Venezuela">Venezuela</option>
+        <option value="Otro">Otro</option>
+      </select>
+    </div>
+  </aside>
+
+  <!-- PREVIEW -->
+  <main class="preview-panel">
+    <h2>Vista previa</h2>
+
+    <div class="preview-wrapper">
+      <div id="sig-preview" class="sig">
+        <div class="sig-info-cell">
+          <span class="sig-name" id="prev-name">Nombre Apellido</span>
+          <span class="sig-meta">
+            <span class="sig-meta-row" id="prev-meta"></span>
+            <span class="sig-email" id="prev-email"></span>
+          </span>
+        </div>
+        <div class="sig-logo-cell">
+          <img src="assets/logo-unit-oscuro-compacto.svg" alt="Unit Public Design" width="96">
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="copySignature()">Copiar firma</button>
+      <button class="btn" onclick="copySignatureHTML()">Copiar HTML</button>
+      <span class="copy-feedback" id="copy-feedback">Copiado al portapapeles</span>
+    </div>
+
+    <p class="instructions">
+      Haz clic en <strong>Copiar firma</strong> y pégala directamente en la configuración de firma de tu cliente de correo (Gmail, Outlook, Apple Mail). Para clientes que acepten HTML, usa <strong>Copiar HTML</strong>.
+    </p>
+  </main>
+
+</div>
+
+<script>
+  const TEAM = [
+    { name: "Juan Felipe López",         title: "Partner & CEO" },
+    { name: "Nicolás Rebolledo",          title: "Partner & Strategy and Creative Director" },
+    { name: "Katalina Papic",             title: "Partner and Operations Director" },
+    { name: "Beatriz Hasbún",             title: "Learning Experience Design Consultant" },
+    { name: "Valentina López",            title: "Creative Economies Consultant" },
+    { name: "Zabel Revuelta Pineda",      title: "Strategic Design Consultant" },
+    { name: "Vicente Puig",               title: "Visual Designer" },
+    { name: "Daniela López Vallejo",      title: "Design and Project Management Consultant" },
+    { name: "Florencia Aguirre",          title: "Strategic Design Consultant" },
+    { name: "Sofía Bosch Gómez",          title: "Associate Consultant in Service Design" },
+    { name: "Federico Vaz",               title: "Associate Consultant in Design and Strategy for Public Innovation" },
+    { name: "Caio Werneck",               title: "Associate Consultant in Public Innovation and Co-design" },
+    { name: "Andrea Apolaro",             title: "Associate Consultant in Public Innovation and Participation" },
+    { name: "Lucas Vaqueiro",             title: "Associate Consultant in Innovation and Participation" },
+    { name: "Juan Felipe Yepes González", title: "Associate Consultant in Public Innovation" },
+    { name: "Cristóbal García-Herrera",   title: "Associate Consultant in Open Innovation and Entrepreneurship" },
+    { name: "Dalal Leiva",                title: "Associate Consultant in Cultural Policies and Creative Economies" },
+    { name: "Paola Lorena Coral Pérez",   title: "Associate Consultant in Innovation and Participation" },
+    { name: "Juan Manuel López",          title: "Associate Consultant in Social Research" },
+    { name: "Silvia Da Rosa",             title: "Associate Consultant in Public Innovation" },
+    { name: "Javier Guillot",             title: "Associate Consultant in Innovation and Sustainability" },
+    { name: "David Salinas",              title: "Creative Technologist" },
+    { name: "Rodrigo Peón-Veiga",         title: "Associate Consultant in Urban Planning" },
+    { name: "Rafael Franco",              title: "Strategic Design Consultant" },
+    { name: "Angela María Reyes",         title: "Public Innovation Consultant" },
+  ];
+
+  // Populate person selector
+  const personSelect = document.getElementById('inp-person');
+  TEAM.forEach((member, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = member.name;
+    personSelect.appendChild(opt);
+  });
+
+  personSelect.addEventListener('change', () => {
+    const idx = personSelect.value;
+    if (idx === '') return;
+    const member = TEAM[parseInt(idx)];
+    document.getElementById('inp-name').value = member.name;
+    document.getElementById('inp-role').value = member.title;
+    updatePreview();
+  });
+
+  const SVG_LOGO = `<svg width="96" height="48" viewBox="0 0 230 116" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M188.901 76.6317C189.547 76.6317 190.072 77.1748 190.072 77.8418V114.434C190.072 115.101 189.547 115.644 188.901 115.644H178.664C178.019 115.644 177.494 115.101 177.494 114.434V77.8418C177.494 77.1748 178.019 76.6317 178.664 76.6317H188.901Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M209.735 76.6317C210.452 76.6317 211.036 77.1748 211.036 77.8418V114.434C211.036 115.101 210.452 115.644 209.735 115.644H198.361C197.644 115.644 197.06 115.101 197.06 114.434V77.8418C197.06 77.1748 197.644 76.6317 198.361 76.6317H209.735Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M229.205 67.1047C229.205 67.748 228.663 68.2718 227.999 68.2718H159.134C158.469 68.2718 157.928 67.748 157.928 67.1047V56.8992C157.928 56.256 158.469 55.7321 159.134 55.7321H227.999C228.663 55.7321 229.205 56.256 229.205 56.8992V67.1047Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M151.593 43.53C152.169 43.7793 152.468 44.4097 152.283 44.9985L150.938 49.2931C150.775 49.8056 150.291 50.1589 149.744 50.1589H138.215C137.376 50.1589 136.771 49.3692 137.02 48.5865L139.716 39.8796C139.936 39.18 140.733 38.8198 141.423 39.1176L151.6 43.53H151.593Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M149.639 55.7321C150.356 55.7321 150.94 56.2882 150.94 56.971V114.405C150.94 115.088 150.356 115.644 149.639 115.644H138.265C137.548 115.644 136.964 115.088 136.964 114.405V56.971C136.964 56.2882 137.548 55.7321 138.265 55.7321H149.639Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M120.312 115.637C121.342 115.637 121.951 114.511 121.356 113.687L79.9559 56.4853C79.615 56.0137 79.0564 55.7321 78.4615 55.7321H66.9635C66.2598 55.7321 65.6867 56.2882 65.6867 56.971V114.405C65.6867 115.088 66.2598 115.644 66.9635 115.644H78.1278C78.8315 115.644 79.4046 115.088 79.4046 114.405V80.2221C79.4046 79.7856 79.985 79.6096 80.2389 79.9686L105.469 115.109C105.709 115.44 106.101 115.637 106.514 115.637H120.312Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M128.805 55.7321C129.45 55.7321 129.976 56.2969 129.976 56.9905V108.813C129.976 109.506 129.45 110.071 128.805 110.071H125.752C125.379 110.071 125.027 109.878 124.807 109.549L117.624 98.8957C117.477 98.6812 117.397 98.4238 117.397 98.1593V56.9905C117.404 56.2969 117.93 55.7321 118.575 55.7321H128.805Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3059 55.7321C13.002 55.7321 13.5688 56.2885 13.5688 56.9716V85.0996C13.5688 94.269 20.3568 101.783 29.484 102.424C30.1872 102.474 30.7541 103.03 30.7469 103.72L30.6321 114.439C30.6249 115.115 30.058 115.671 29.3692 115.643C12.5642 115.016 0 101.812 0 85.0996V56.9716C0 56.2885 0.566862 55.7321 1.26288 55.7321H12.3059Z" fill="#101725"/><path d="M45.1147 102.331H37.613C36.9099 102.331 36.3373 102.887 36.3373 103.57V114.405C36.3373 115.088 36.9099 115.644 37.613 115.644H58.8207C59.5237 115.644 60.0963 115.088 60.0963 114.405V56.9712C60.0963 56.2883 59.5237 55.7321 58.8207 55.7321H47.666C46.9629 55.7321 46.3903 56.2883 46.3903 56.9712V101.092C46.3903 101.775 45.8177 102.331 45.1147 102.331Z" fill="#101725"/><path d="M78.577 36.5608H76.4237L67.9793 25.8061V36.5608H65.5093V21.6178H67.6626L76.0859 32.3304V21.6178H78.577V36.5608Z" fill="#101725"/><path d="M61.8851 34.6666C60.534 36.1188 58.2118 36.8133 55.9107 36.8133C51.2029 36.8133 47.804 33.4459 47.804 29.0893C47.804 24.7748 51.1396 21.3653 55.6573 21.3653C58.1062 21.3653 60.0696 22.1861 61.4629 23.6172L59.774 25.3641C58.8029 24.3959 57.4729 23.7435 55.6573 23.7435C52.5118 23.7435 50.2951 26.1217 50.2951 29.0893C50.2951 32.12 52.4696 34.4351 55.8896 34.4351C57.2407 34.4351 58.634 34.1615 59.4784 33.4669V30.1416H55.7207V27.8265H61.8851V34.6666Z" fill="#101725"/><path d="M41.977 36.5608V21.6178H44.447V36.5608H41.977Z" fill="#101725"/><path d="M28.3277 34.1194L30.2699 32.583C31.051 33.7826 32.2966 34.4982 33.7532 34.4982C35.1677 34.4982 36.181 33.7616 36.181 32.6461C36.181 31.5938 35.4843 30.8993 34.0488 30.3731L32.4021 29.7838C30.0377 28.9209 28.8766 27.616 28.8766 25.5745C28.8766 22.9648 30.9455 21.3653 33.7321 21.3653C35.5899 21.3653 37.1732 22.1019 38.271 23.4068L36.561 25.0694C35.8221 24.1855 34.8932 23.6804 33.7321 23.6804C32.4655 23.6804 31.3677 24.3328 31.3677 25.4062C31.3677 26.5006 32.0855 26.9846 33.6477 27.5529L35.1677 28.1211C37.3632 28.942 38.6932 30.2679 38.6932 32.4988C38.6721 35.1085 36.6243 36.8133 33.6899 36.8133C31.2621 36.8133 29.2355 35.7189 28.3277 34.1194Z" fill="#101725"/><path d="M17.0221 36.5608V21.6178H26.0366V23.975H19.4921V27.8055H24.7699V30.1627H19.4921V34.2036H26.0366V36.5608H17.0221Z" fill="#101725"/><path d="M1.21522 36.5608V21.6178H5.81744C10.2719 21.6178 13.6708 24.859 13.6708 29.0893C13.6708 33.3196 10.2719 36.5608 5.81744 36.5608H1.21522ZM3.68522 34.2667H5.81744C9.02633 34.2667 11.1585 32.0147 11.1585 29.0893C11.1585 26.1639 9.02633 23.9119 5.81744 23.9119H3.68522V34.2667Z" fill="#101725"/><path d="M62.1472 7.72402C62.1472 3.40951 65.5883 0 69.8949 0C72.8294 0 75.3205 1.49429 76.6505 3.78834L74.5183 5.00903C73.5472 3.40951 71.9638 2.37824 69.8949 2.37824C66.9183 2.37824 64.6383 4.75648 64.6383 7.72402C64.6383 10.6916 66.9183 13.0698 69.8949 13.0698C71.9638 13.0698 73.5472 12.0385 74.5183 10.439L76.6505 11.6597C75.3205 13.9537 72.8294 15.448 69.8949 15.448C65.5883 15.448 62.1472 12.0385 62.1472 7.72402Z" fill="#101725"/><path d="M56.3202 15.1955V0.252575H58.7902V15.1955H56.3202Z" fill="#101725"/><path d="M44.1005 15.1955V0.252575H46.5705V12.8383H53.4316V15.1955H44.1005Z" fill="#101725"/><path d="M30.149 15.1955V0.252575H35.3212C38.0023 0.252575 39.7968 2.14675 39.7968 4.37766C39.7968 5.70358 39.2268 6.65067 38.4034 7.26101C39.7756 7.82926 40.8101 8.96577 40.8101 10.8178C40.8101 13.3013 38.8256 15.1955 35.9756 15.1955H30.149ZM32.619 6.54544H35.1945C36.5456 6.54544 37.369 5.66149 37.369 4.52499C37.369 3.43058 36.5456 2.50454 35.1945 2.50454H32.619V6.54544ZM32.619 12.9435H35.9123C37.4956 12.9435 38.4034 12.0385 38.4034 10.7968C38.4034 9.57611 37.5168 8.65007 35.9123 8.65007H32.619V12.9435Z" fill="#101725"/><path d="M26.0185 9.3446C26.0185 13.0698 23.5485 15.448 20.0652 15.448C16.5396 15.448 14.0907 13.0698 14.0907 9.3446V0.252575H16.5607V9.38669C16.5607 11.7228 17.954 13.0698 20.0652 13.0698C22.1552 13.0698 23.5485 11.7228 23.5485 9.38669V0.252575H26.0185V9.3446Z" fill="#101725"/><path d="M5.98633 0.252575C9.06855 0.252575 11.1797 2.37826 11.1797 5.13533C11.1797 7.8924 9.06855 10.0181 5.98633 10.0181H3.68522V15.1955H1.21522V0.252575H5.98633ZM5.96522 7.70299C7.71744 7.70299 8.75188 6.58753 8.75188 5.13533C8.75188 3.68313 7.71744 2.56767 5.96522 2.56767H3.68522V7.70299H5.96522Z" fill="#101725"/></svg>`;
+
+  function getValues() {
+    return {
+      name: document.getElementById('inp-name').value.trim() || 'Nombre Apellido',
+      role: document.getElementById('inp-role').value.trim(),
+      email: document.getElementById('inp-email').value.trim(),
+      country: document.getElementById('inp-country').value,
+    };
+  }
+
+  function updatePreview() {
+    const v = getValues();
+
+    document.getElementById('prev-name').textContent = v.name;
+
+    // Meta row: role · country
+    const metaParts = [v.role, v.country].filter(Boolean);
+    const metaEl = document.getElementById('prev-meta');
+    if (metaParts.length) {
+      metaEl.innerHTML = metaParts.map((p, i) =>
+        i === 0 ? p : `<span class="sig-dot">—</span>${p}`
+      ).join('');
+      metaEl.style.display = 'block';
+    } else {
+      metaEl.innerHTML = '';
+      metaEl.style.display = 'none';
+    }
+
+    // Email + web
+    const emailEl = document.getElementById('prev-email');
+    const emailLine = v.email
+      ? `<a href="mailto:${v.email}" style="color:#101725;opacity:0.8;text-decoration:none;">${v.email}</a><br>`
+      : '';
+    emailEl.innerHTML = emailLine + `<a href="https://unit.la" style="color:#101725;opacity:0.8;text-decoration:none;">unit.la</a>`;
+    emailEl.style.display = 'block';
+  }
+
+  function buildSignatureHTML(v) {
+    const metaParts = [v.role, v.country].filter(Boolean);
+    const metaRow = metaParts.length
+      ? metaParts.join(' <span style="display:inline-block;margin:0 6px;opacity:0.35;">—</span> ')
+      : '';
+
+    const emailRow = (v.email
+      ? `<br><a href="mailto:${v.email}" style="color:#101725;opacity:0.8;text-decoration:none;font-size:12px;font-family:Arial,Helvetica,sans-serif;">${v.email}</a>`
+      : '')
+      + `<br><a href="https://unit.la" style="color:#101725;opacity:0.8;text-decoration:none;font-size:12px;font-family:Arial,Helvetica,sans-serif;">unit.la</a>`;
+
+    return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;">
+  <tr>
+    <td style="vertical-align:middle;padding-right:28px;border-right:1px solid #9E9BB9;">
+      <span style="display:block;font-family:Georgia,'Times New Roman',serif;font-weight:300;font-size:28px;line-height:1.15;color:#2B223A;margin-bottom:8px;">${v.name}</span>
+      <span style="display:block;font-size:12px;line-height:1.7;color:#101725;font-family:Arial,Helvetica,sans-serif;">${metaRow}${emailRow}</span>
+    </td>
+    <td style="vertical-align:middle;padding-left:28px;">
+      ${SVG_LOGO}
+    </td>
+  </tr>
+</table>`;
+  }
+
+  async function copySignature() {
+    const v = getValues();
+    const html = buildSignatureHTML(v);
+
+    try {
+      const blob = new Blob([html], { type: 'text/html' });
+      const item = new ClipboardItem({ 'text/html': blob });
+      await navigator.clipboard.write([item]);
+      showFeedback('Firma copiada');
+    } catch {
+      // fallback
+      copySignatureHTML();
+    }
+  }
+
+  async function copySignatureHTML() {
+    const v = getValues();
+    const html = buildSignatureHTML(v);
+
+    try {
+      await navigator.clipboard.writeText(html);
+      showFeedback('HTML copiado');
+    } catch {
+      showFeedback('No se pudo copiar. Intenta en un navegador.');
+    }
+  }
+
+  function showFeedback(msg) {
+    const el = document.getElementById('copy-feedback');
+    el.textContent = msg;
+    el.classList.add('visible');
+    setTimeout(() => el.classList.remove('visible'), 2200);
+  }
+
+  // Live updates
+  ['inp-name', 'inp-role', 'inp-email', 'inp-country'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', updatePreview);
+    el.addEventListener('change', updatePreview);
+  });
+
+  updatePreview();
+</script>
+
+</body>
+</html>
