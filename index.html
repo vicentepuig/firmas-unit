@@ -799,20 +799,19 @@ ${html}
     }
   }
 
-  // Converts the inline SVG logo to a base64 PNG at exact display size
+  // Renders el logo SVG a PNG a tamaño exacto de display
   function logoToPNG() {
     return new Promise((resolve) => {
       const svgEl = document.querySelector('.sig-logo-cell svg');
       const svgStr = new XMLSerializer().serializeToString(svgEl);
-      const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
-      const url = URL.createObjectURL(svgBlob);
+      const blob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
         canvas.width = 115;
         canvas.height = 58;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, 115, 58);
+        canvas.getContext('2d').drawImage(img, 0, 0, 115, 58);
         URL.revokeObjectURL(url);
         resolve(canvas.toDataURL('image/png'));
       };
@@ -820,23 +819,30 @@ ${html}
     });
   }
 
-  // Renders the name element (Reckless font) as a PNG at exact display size
+  // Renderiza el nombre a 2x y luego reduce a 1x (supersampling) para mayor nitidez
   async function nameToPNG() {
     const nameEl = document.getElementById('prev-name');
-    const canvas = await html2canvas(nameEl, {
-      scale: 1,
+    // Renderizar a 2x para mejor antialiasing
+    const canvas2x = await html2canvas(nameEl, {
+      scale: 2,
       backgroundColor: '#ffffff',
       useCORS: true,
       logging: false,
     });
-    return {
-      png: canvas.toDataURL('image/png'),
-      w: canvas.width,
-      h: canvas.height,
-    };
+    // Reducir a 1x (tamaño exacto de display)
+    const w = Math.round(canvas2x.width / 2);
+    const h = Math.round(canvas2x.height / 2);
+    const canvas1x = document.createElement('canvas');
+    canvas1x.width = w;
+    canvas1x.height = h;
+    const ctx = canvas1x.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(canvas2x, 0, 0, w, h);
+    return { png: canvas1x.toDataURL('image/png'), w, h };
   }
 
-  // Builds Gmail-safe HTML: name + logo as PNG, rest as Arial
+  // Construye HTML para Gmail: nombre y logo como PNG, resto en Arial
   async function buildGmailHTML(v) {
     const [logoPng, nameData] = await Promise.all([logoToPNG(), nameToPNG()]);
 
