@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generador de Firmas — Unit Public Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&display=swap" rel="stylesheet">
   <script>/*!
  * html2canvas 1.4.1 <https://html2canvas.hertzen.com>
  * Copyright (c) 2022 Niklas von Hertzen <https://hertzen.com>
@@ -58,13 +61,13 @@
       --color-name: #2B223A;
       --color-bg: #f1f1f1;
       --color-surface: #FFFFFF;
-      --color-border: #E2E0DB;
+      --color-border: #101725;
       --color-accent: #101725;
     }
 
     body {
       font-family: 'EuclidSquare', system-ui, sans-serif;
-      font-weight: 400;
+      font-weight: 300;
       background: var(--color-bg);
       color: var(--color-ink);
       min-height: 100vh;
@@ -74,7 +77,7 @@
 
     header {
       padding: 32px 48px 24px;
-      border-bottom: 1px solid var(--color-border);
+      border-bottom: 0.75px solid var(--color-border);
       background: var(--color-surface);
       display: flex;
       align-items: center;
@@ -88,11 +91,9 @@
 
     header h1 {
       font-family: 'EuclidSquare', sans-serif;
-      font-weight: 400;
+      font-weight: 300;
       font-size: 14px;
       color: var(--color-ink);
-      opacity: 0.5;
-      letter-spacing: 0.02em;
     }
 
     .layout {
@@ -104,21 +105,20 @@
     /* FORM */
     .form-panel {
       background: var(--color-surface);
-      border-right: 1px solid var(--color-border);
-      padding: 40px 36px;
+      border-right: 0.75px solid var(--color-border);
+      padding: 48px 36px;
       display: flex;
       flex-direction: column;
       gap: 28px;
     }
 
     .form-panel h2 {
-      font-family: 'EuclidSquare', sans-serif;
-      font-weight: 500;
-      font-size: 13px;
-      letter-spacing: 0.08em;
+      font-family: 'DM Mono', monospace;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--color-ink);
-      opacity: 0.4;
     }
 
     .field {
@@ -129,11 +129,9 @@
 
     .field label {
       font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      font-weight: 400;
+      letter-spacing: 0;
       color: var(--color-ink);
-      opacity: 0.45;
     }
 
     .field input,
@@ -144,7 +142,7 @@
       color: var(--color-ink);
       background: transparent;
       border: none;
-      border-bottom: 1px solid var(--color-border);
+      border-bottom: 0.75px solid var(--color-border);
       padding: 10px 0;
       outline: none;
       transition: border-color 0.2s;
@@ -155,7 +153,12 @@
 
     .field input::placeholder {
       color: var(--color-ink);
-      opacity: 0.25;
+      opacity: 0.3;
+    }
+
+    .field select.empty {
+      color: var(--color-ink);
+      opacity: 0.3;
     }
 
     .field input:focus,
@@ -180,18 +183,17 @@
     }
 
     .preview-panel h2 {
-      font-family: 'EuclidSquare', sans-serif;
-      font-weight: 500;
-      font-size: 13px;
-      letter-spacing: 0.08em;
+      font-family: 'DM Mono', monospace;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--color-ink);
-      opacity: 0.4;
     }
 
     .preview-wrapper {
       background: white;
-      border: 1px solid var(--color-border);
+      border: 0.75px solid var(--color-border);
       padding: 40px 44px;
       display: inline-block;
       max-width: 600px;
@@ -212,7 +214,7 @@
 
     .sig-logo-cell img {
       display: block;
-      width: 96px;
+      width: 115px;
       height: auto;
     }
 
@@ -268,32 +270,36 @@
     }
 
     .btn {
-      font-family: 'EuclidSquare', sans-serif;
-      font-weight: 500;
-      font-size: 12px;
-      letter-spacing: 0.06em;
+      font-family: 'DM Mono', monospace;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       padding: 12px 24px;
-      border: 1px solid var(--color-ink);
-      background: transparent;
-      color: var(--color-ink);
+      border: none;
+      color: #c4c5c8;
       cursor: pointer;
-      transition: background 0.15s, color 0.15s;
+      background: linear-gradient(to right, #D2F7DD 50%, transparent 50%);
+      background-size: 200% 100%;
+      background-position: right center;
+      transition: background-position 0.4s ease, color 0.2s;
     }
 
     .btn:hover {
-      background: var(--color-ink);
-      color: white;
+      background-position: left center;
+      color: var(--color-ink);
     }
 
     .btn-primary {
-      background: var(--color-ink);
-      color: white;
+      background: linear-gradient(to right, #D2F7DD 50%, #101725 50%);
+      background-size: 200% 100%;
+      background-position: right center;
+      color: #c4c5c8;
     }
 
     .btn-primary:hover {
-      background: #2B223A;
-      border-color: #2B223A;
+      background-position: left center;
+      color: var(--color-ink);
     }
 
     .copy-feedback {
@@ -361,7 +367,7 @@
     </div>
 
     <div class="field">
-      <label>Nombre completo</label>
+      <label>Nombre Completo</label>
       <input type="text" id="inp-name" placeholder="María González" autocomplete="off">
     </div>
 
@@ -371,7 +377,7 @@
     </div>
 
     <div class="field">
-      <label>Correo electrónico</label>
+      <label>Correo Electrónico</label>
       <input type="email" id="inp-email" placeholder="maria@unitpublicdesign.com" autocomplete="off">
     </div>
 
@@ -379,34 +385,207 @@
       <label>País</label>
       <select id="inp-country">
         <option value="">— Selecciona —</option>
+        <option value="Afganistán">Afganistán</option>
+        <option value="Albania">Albania</option>
+        <option value="Alemania">Alemania</option>
+        <option value="Andorra">Andorra</option>
+        <option value="Angola">Angola</option>
+        <option value="Antigua y Barbuda">Antigua y Barbuda</option>
+        <option value="Arabia Saudita">Arabia Saudita</option>
+        <option value="Argelia">Argelia</option>
         <option value="Argentina">Argentina</option>
+        <option value="Armenia">Armenia</option>
+        <option value="Australia">Australia</option>
+        <option value="Austria">Austria</option>
+        <option value="Azerbaiyán">Azerbaiyán</option>
+        <option value="Bahamas">Bahamas</option>
+        <option value="Bangladés">Bangladés</option>
+        <option value="Barbados">Barbados</option>
+        <option value="Baréin">Baréin</option>
+        <option value="Bélgica">Bélgica</option>
+        <option value="Belice">Belice</option>
+        <option value="Benín">Benín</option>
+        <option value="Bielorrusia">Bielorrusia</option>
         <option value="Bolivia">Bolivia</option>
+        <option value="Bosnia y Herzegovina">Bosnia y Herzegovina</option>
+        <option value="Botsuana">Botsuana</option>
         <option value="Brasil">Brasil</option>
+        <option value="Brunéi">Brunéi</option>
+        <option value="Bulgaria">Bulgaria</option>
+        <option value="Burkina Faso">Burkina Faso</option>
+        <option value="Burundi">Burundi</option>
+        <option value="Bután">Bután</option>
+        <option value="Cabo Verde">Cabo Verde</option>
+        <option value="Camboya">Camboya</option>
+        <option value="Camerún">Camerún</option>
+        <option value="Canadá">Canadá</option>
+        <option value="Catar">Catar</option>
+        <option value="Chad">Chad</option>
         <option value="Chile">Chile</option>
+        <option value="China">China</option>
+        <option value="Chipre">Chipre</option>
         <option value="Colombia">Colombia</option>
+        <option value="Comoras">Comoras</option>
+        <option value="Congo">Congo</option>
+        <option value="Corea del Norte">Corea del Norte</option>
+        <option value="Corea del Sur">Corea del Sur</option>
         <option value="Costa Rica">Costa Rica</option>
+        <option value="Costa de Marfil">Costa de Marfil</option>
+        <option value="Croacia">Croacia</option>
         <option value="Cuba">Cuba</option>
+        <option value="Dinamarca">Dinamarca</option>
+        <option value="Dominica">Dominica</option>
         <option value="Ecuador">Ecuador</option>
+        <option value="Egipto">Egipto</option>
         <option value="El Salvador">El Salvador</option>
+        <option value="Emiratos Árabes Unidos">Emiratos Árabes Unidos</option>
+        <option value="Eritrea">Eritrea</option>
+        <option value="Eslovaquia">Eslovaquia</option>
+        <option value="Eslovenia">Eslovenia</option>
         <option value="España">España</option>
+        <option value="Estados Unidos">Estados Unidos</option>
+        <option value="Estonia">Estonia</option>
+        <option value="Etiopía">Etiopía</option>
+        <option value="Filipinas">Filipinas</option>
+        <option value="Finlandia">Finlandia</option>
+        <option value="Fiyi">Fiyi</option>
+        <option value="Francia">Francia</option>
+        <option value="Gabón">Gabón</option>
+        <option value="Gambia">Gambia</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Ghana">Ghana</option>
+        <option value="Granada">Granada</option>
+        <option value="Grecia">Grecia</option>
         <option value="Guatemala">Guatemala</option>
+        <option value="Guinea">Guinea</option>
+        <option value="Guinea-Bisáu">Guinea-Bisáu</option>
+        <option value="Guinea Ecuatorial">Guinea Ecuatorial</option>
+        <option value="Guyana">Guyana</option>
+        <option value="Haití">Haití</option>
         <option value="Honduras">Honduras</option>
+        <option value="Hungría">Hungría</option>
+        <option value="India">India</option>
+        <option value="Indonesia">Indonesia</option>
+        <option value="Irak">Irak</option>
+        <option value="Irán">Irán</option>
+        <option value="Irlanda">Irlanda</option>
+        <option value="Islandia">Islandia</option>
+        <option value="Islas Marshall">Islas Marshall</option>
+        <option value="Islas Salomón">Islas Salomón</option>
+        <option value="Israel">Israel</option>
+        <option value="Italia">Italia</option>
+        <option value="Jamaica">Jamaica</option>
+        <option value="Japón">Japón</option>
+        <option value="Jordania">Jordania</option>
+        <option value="Kazajistán">Kazajistán</option>
+        <option value="Kenia">Kenia</option>
+        <option value="Kirguistán">Kirguistán</option>
+        <option value="Kiribati">Kiribati</option>
+        <option value="Kuwait">Kuwait</option>
+        <option value="Laos">Laos</option>
+        <option value="Lesoto">Lesoto</option>
+        <option value="Letonia">Letonia</option>
+        <option value="Líbano">Líbano</option>
+        <option value="Liberia">Liberia</option>
+        <option value="Libia">Libia</option>
+        <option value="Liechtenstein">Liechtenstein</option>
+        <option value="Lituania">Lituania</option>
+        <option value="Luxemburgo">Luxemburgo</option>
+        <option value="Macedonia del Norte">Macedonia del Norte</option>
+        <option value="Madagascar">Madagascar</option>
+        <option value="Malasia">Malasia</option>
+        <option value="Malaui">Malaui</option>
+        <option value="Maldivas">Maldivas</option>
+        <option value="Malí">Malí</option>
+        <option value="Malta">Malta</option>
+        <option value="Marruecos">Marruecos</option>
+        <option value="Mauricio">Mauricio</option>
+        <option value="Mauritania">Mauritania</option>
         <option value="México">México</option>
+        <option value="Micronesia">Micronesia</option>
+        <option value="Moldavia">Moldavia</option>
+        <option value="Mónaco">Mónaco</option>
+        <option value="Mongolia">Mongolia</option>
+        <option value="Montenegro">Montenegro</option>
+        <option value="Mozambique">Mozambique</option>
+        <option value="Namibia">Namibia</option>
+        <option value="Nauru">Nauru</option>
+        <option value="Nepal">Nepal</option>
         <option value="Nicaragua">Nicaragua</option>
+        <option value="Níger">Níger</option>
+        <option value="Nigeria">Nigeria</option>
+        <option value="Noruega">Noruega</option>
+        <option value="Nueva Zelanda">Nueva Zelanda</option>
+        <option value="Omán">Omán</option>
+        <option value="Países Bajos">Países Bajos</option>
+        <option value="Pakistán">Pakistán</option>
+        <option value="Palaos">Palaos</option>
+        <option value="Palestina">Palestina</option>
         <option value="Panamá">Panamá</option>
+        <option value="Papúa Nueva Guinea">Papúa Nueva Guinea</option>
         <option value="Paraguay">Paraguay</option>
         <option value="Perú">Perú</option>
+        <option value="Polonia">Polonia</option>
+        <option value="Portugal">Portugal</option>
+        <option value="Reino Unido">Reino Unido</option>
+        <option value="República Centroafricana">República Centroafricana</option>
+        <option value="República Checa">República Checa</option>
+        <option value="República del Congo">República del Congo</option>
+        <option value="República Democrática del Congo">República Democrática del Congo</option>
         <option value="República Dominicana">República Dominicana</option>
+        <option value="Ruanda">Ruanda</option>
+        <option value="Rumania">Rumania</option>
+        <option value="Rusia">Rusia</option>
+        <option value="Samoa">Samoa</option>
+        <option value="San Cristóbal y Nieves">San Cristóbal y Nieves</option>
+        <option value="San Marino">San Marino</option>
+        <option value="San Vicente y las Granadinas">San Vicente y las Granadinas</option>
+        <option value="Santa Lucía">Santa Lucía</option>
+        <option value="Santo Tomé y Príncipe">Santo Tomé y Príncipe</option>
+        <option value="Senegal">Senegal</option>
+        <option value="Serbia">Serbia</option>
+        <option value="Seychelles">Seychelles</option>
+        <option value="Sierra Leona">Sierra Leona</option>
+        <option value="Singapur">Singapur</option>
+        <option value="Siria">Siria</option>
+        <option value="Somalia">Somalia</option>
+        <option value="Sri Lanka">Sri Lanka</option>
+        <option value="Suazilandia">Suazilandia</option>
+        <option value="Sudáfrica">Sudáfrica</option>
+        <option value="Sudán">Sudán</option>
+        <option value="Sudán del Sur">Sudán del Sur</option>
+        <option value="Suecia">Suecia</option>
+        <option value="Suiza">Suiza</option>
+        <option value="Surinam">Surinam</option>
+        <option value="Tailandia">Tailandia</option>
+        <option value="Tanzania">Tanzania</option>
+        <option value="Tayikistán">Tayikistán</option>
+        <option value="Timor Oriental">Timor Oriental</option>
+        <option value="Togo">Togo</option>
+        <option value="Tonga">Tonga</option>
+        <option value="Trinidad y Tobago">Trinidad y Tobago</option>
+        <option value="Túnez">Túnez</option>
+        <option value="Turkmenistán">Turkmenistán</option>
+        <option value="Turquía">Turquía</option>
+        <option value="Tuvalu">Tuvalu</option>
+        <option value="Ucrania">Ucrania</option>
+        <option value="Uganda">Uganda</option>
         <option value="Uruguay">Uruguay</option>
+        <option value="Uzbekistán">Uzbekistán</option>
+        <option value="Vanuatu">Vanuatu</option>
         <option value="Venezuela">Venezuela</option>
-        <option value="Otro">Otro</option>
+        <option value="Vietnam">Vietnam</option>
+        <option value="Yemen">Yemen</option>
+        <option value="Yibuti">Yibuti</option>
+        <option value="Zambia">Zambia</option>
+        <option value="Zimbabue">Zimbabue</option>
       </select>
     </div>
   </aside>
 
   <!-- PREVIEW -->
   <main class="preview-panel">
-    <h2>Vista previa</h2>
+    <h2>Vista Previa</h2>
 
     <div class="preview-wrapper">
       <div id="sig-preview" class="sig">
@@ -418,19 +597,19 @@
           </span>
         </div>
         <div class="sig-logo-cell">
-          <svg width="96" height="48" viewBox="0 0 230 116" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M188.901 76.6317C189.547 76.6317 190.072 77.1748 190.072 77.8418V114.434C190.072 115.101 189.547 115.644 188.901 115.644H178.664C178.019 115.644 177.494 115.101 177.494 114.434V77.8418C177.494 77.1748 178.019 76.6317 178.664 76.6317H188.901Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M209.735 76.6317C210.452 76.6317 211.036 77.1748 211.036 77.8418V114.434C211.036 115.101 210.452 115.644 209.735 115.644H198.361C197.644 115.644 197.06 115.101 197.06 114.434V77.8418C197.06 77.1748 197.644 76.6317 198.361 76.6317H209.735Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M229.205 67.1047C229.205 67.748 228.663 68.2718 227.999 68.2718H159.134C158.469 68.2718 157.928 67.748 157.928 67.1047V56.8992C157.928 56.256 158.469 55.7321 159.134 55.7321H227.999C228.663 55.7321 229.205 56.256 229.205 56.8992V67.1047Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M151.593 43.53C152.169 43.7793 152.468 44.4097 152.283 44.9985L150.938 49.2931C150.775 49.8056 150.291 50.1589 149.744 50.1589H138.215C137.376 50.1589 136.771 49.3692 137.02 48.5865L139.716 39.8796C139.936 39.18 140.733 38.8198 141.423 39.1176L151.6 43.53H151.593Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M149.639 55.7321C150.356 55.7321 150.94 56.2882 150.94 56.971V114.405C150.94 115.088 150.356 115.644 149.639 115.644H138.265C137.548 115.644 136.964 115.088 136.964 114.405V56.971C136.964 56.2882 137.548 55.7321 138.265 55.7321H149.639Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M120.312 115.637C121.342 115.637 121.951 114.511 121.356 113.687L79.9559 56.4853C79.615 56.0137 79.0564 55.7321 78.4615 55.7321H66.9635C66.2598 55.7321 65.6867 56.2882 65.6867 56.971V114.405C65.6867 115.088 66.2598 115.644 66.9635 115.644H78.1278C78.8315 115.644 79.4046 115.088 79.4046 114.405V80.2221C79.4046 79.7856 79.985 79.6096 80.2389 79.9686L105.469 115.109C105.709 115.44 106.101 115.637 106.514 115.637H120.312Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M128.805 55.7321C129.45 55.7321 129.976 56.2969 129.976 56.9905V108.813C129.976 109.506 129.45 110.071 128.805 110.071H125.752C125.379 110.071 125.027 109.878 124.807 109.549L117.624 98.8957C117.477 98.6812 117.397 98.4238 117.397 98.1593V56.9905C117.404 56.2969 117.93 55.7321 118.575 55.7321H128.805Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3059 55.7321C13.002 55.7321 13.5688 56.2885 13.5688 56.9716V85.0996C13.5688 94.269 20.3568 101.783 29.484 102.424C30.1872 102.474 30.7541 103.03 30.7469 103.72L30.6321 114.439C30.6249 115.115 30.058 115.671 29.3692 115.643C12.5642 115.016 0 101.812 0 85.0996V56.9716C0 56.2885 0.566862 55.7321 1.26288 55.7321H12.3059Z" fill="#101725"/><path d="M45.1147 102.331H37.613C36.9099 102.331 36.3373 102.887 36.3373 103.57V114.405C36.3373 115.088 36.9099 115.644 37.613 115.644H58.8207C59.5237 115.644 60.0963 115.088 60.0963 114.405V56.9712C60.0963 56.2883 59.5237 55.7321 58.8207 55.7321H47.666C46.9629 55.7321 46.3903 56.2883 46.3903 56.9712V101.092C46.3903 101.775 45.8177 102.331 45.1147 102.331Z" fill="#101725"/><path d="M78.577 36.5608H76.4237L67.9793 25.8061V36.5608H65.5093V21.6178H67.6626L76.0859 32.3304V21.6178H78.577V36.5608Z" fill="#101725"/><path d="M61.8851 34.6666C60.534 36.1188 58.2118 36.8133 55.9107 36.8133C51.2029 36.8133 47.804 33.4459 47.804 29.0893C47.804 24.7748 51.1396 21.3653 55.6573 21.3653C58.1062 21.3653 60.0696 22.1861 61.4629 23.6172L59.774 25.3641C58.8029 24.3959 57.4729 23.7435 55.6573 23.7435C52.5118 23.7435 50.2951 26.1217 50.2951 29.0893C50.2951 32.12 52.4696 34.4351 55.8896 34.4351C57.2407 34.4351 58.634 34.1615 59.4784 33.4669V30.1416H55.7207V27.8265H61.8851V34.6666Z" fill="#101725"/><path d="M41.977 36.5608V21.6178H44.447V36.5608H41.977Z" fill="#101725"/><path d="M28.3277 34.1194L30.2699 32.583C31.051 33.7826 32.2966 34.4982 33.7532 34.4982C35.1677 34.4982 36.181 33.7616 36.181 32.6461C36.181 31.5938 35.4843 30.8993 34.0488 30.3731L32.4021 29.7838C30.0377 28.9209 28.8766 27.616 28.8766 25.5745C28.8766 22.9648 30.9455 21.3653 33.7321 21.3653C35.5899 21.3653 37.1732 22.1019 38.271 23.4068L36.561 25.0694C35.8221 24.1855 34.8932 23.6804 33.7321 23.6804C32.4655 23.6804 31.3677 24.3328 31.3677 25.4062C31.3677 26.5006 32.0855 26.9846 33.6477 27.5529L35.1677 28.1211C37.3632 28.942 38.6932 30.2679 38.6932 32.4988C38.6721 35.1085 36.6243 36.8133 33.6899 36.8133C31.2621 36.8133 29.2355 35.7189 28.3277 34.1194Z" fill="#101725"/><path d="M17.0221 36.5608V21.6178H26.0366V23.975H19.4921V27.8055H24.7699V30.1627H19.4921V34.2036H26.0366V36.5608H17.0221Z" fill="#101725"/><path d="M1.21522 36.5608V21.6178H5.81744C10.2719 21.6178 13.6708 24.859 13.6708 29.0893C13.6708 33.3196 10.2719 36.5608 5.81744 36.5608H1.21522ZM3.68522 34.2667H5.81744C9.02633 34.2667 11.1585 32.0147 11.1585 29.0893C11.1585 26.1639 9.02633 23.9119 5.81744 23.9119H3.68522V34.2667Z" fill="#101725"/><path d="M62.1472 7.72402C62.1472 3.40951 65.5883 0 69.8949 0C72.8294 0 75.3205 1.49429 76.6505 3.78834L74.5183 5.00903C73.5472 3.40951 71.9638 2.37824 69.8949 2.37824C66.9183 2.37824 64.6383 4.75648 64.6383 7.72402C64.6383 10.6916 66.9183 13.0698 69.8949 13.0698C71.9638 13.0698 73.5472 12.0385 74.5183 10.439L76.6505 11.6597C75.3205 13.9537 72.8294 15.448 69.8949 15.448C65.5883 15.448 62.1472 12.0385 62.1472 7.72402Z" fill="#101725"/><path d="M56.3202 15.1955V0.252575H58.7902V15.1955H56.3202Z" fill="#101725"/><path d="M44.1005 15.1955V0.252575H46.5705V12.8383H53.4316V15.1955H44.1005Z" fill="#101725"/><path d="M30.149 15.1955V0.252575H35.3212C38.0023 0.252575 39.7968 2.14675 39.7968 4.37766C39.7968 5.70358 39.2268 6.65067 38.4034 7.26101C39.7756 7.82926 40.8101 8.96577 40.8101 10.8178C40.8101 13.3013 38.8256 15.1955 35.9756 15.1955H30.149ZM32.619 6.54544H35.1945C36.5456 6.54544 37.369 5.66149 37.369 4.52499C37.369 3.43058 36.5456 2.50454 35.1945 2.50454H32.619V6.54544ZM32.619 12.9435H35.9123C37.4956 12.9435 38.4034 12.0385 38.4034 10.7968C38.4034 9.57611 37.5168 8.65007 35.9123 8.65007H32.619V12.9435Z" fill="#101725"/><path d="M26.0185 9.3446C26.0185 13.0698 23.5485 15.448 20.0652 15.448C16.5396 15.448 14.0907 13.0698 14.0907 9.3446V0.252575H16.5607V9.38669C16.5607 11.7228 17.954 13.0698 20.0652 13.0698C22.1552 13.0698 23.5485 11.7228 23.5485 9.38669V0.252575H26.0185V9.3446Z" fill="#101725"/><path d="M5.98633 0.252575C9.06855 0.252575 11.1797 2.37826 11.1797 5.13533C11.1797 7.8924 9.06855 10.0181 5.98633 10.0181H3.68522V15.1955H1.21522V0.252575H5.98633ZM5.96522 7.70299C7.71744 7.70299 8.75188 6.58753 8.75188 5.13533C8.75188 3.68313 7.71744 2.56767 5.96522 2.56767H3.68522V7.70299H5.96522Z" fill="#101725"/></svg>
+          <svg width="115" height="58" viewBox="0 0 230 116" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M188.901 76.6317C189.547 76.6317 190.072 77.1748 190.072 77.8418V114.434C190.072 115.101 189.547 115.644 188.901 115.644H178.664C178.019 115.644 177.494 115.101 177.494 114.434V77.8418C177.494 77.1748 178.019 76.6317 178.664 76.6317H188.901Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M209.735 76.6317C210.452 76.6317 211.036 77.1748 211.036 77.8418V114.434C211.036 115.101 210.452 115.644 209.735 115.644H198.361C197.644 115.644 197.06 115.101 197.06 114.434V77.8418C197.06 77.1748 197.644 76.6317 198.361 76.6317H209.735Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M229.205 67.1047C229.205 67.748 228.663 68.2718 227.999 68.2718H159.134C158.469 68.2718 157.928 67.748 157.928 67.1047V56.8992C157.928 56.256 158.469 55.7321 159.134 55.7321H227.999C228.663 55.7321 229.205 56.256 229.205 56.8992V67.1047Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M151.593 43.53C152.169 43.7793 152.468 44.4097 152.283 44.9985L150.938 49.2931C150.775 49.8056 150.291 50.1589 149.744 50.1589H138.215C137.376 50.1589 136.771 49.3692 137.02 48.5865L139.716 39.8796C139.936 39.18 140.733 38.8198 141.423 39.1176L151.6 43.53H151.593Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M149.639 55.7321C150.356 55.7321 150.94 56.2882 150.94 56.971V114.405C150.94 115.088 150.356 115.644 149.639 115.644H138.265C137.548 115.644 136.964 115.088 136.964 114.405V56.971C136.964 56.2882 137.548 55.7321 138.265 55.7321H149.639Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M120.312 115.637C121.342 115.637 121.951 114.511 121.356 113.687L79.9559 56.4853C79.615 56.0137 79.0564 55.7321 78.4615 55.7321H66.9635C66.2598 55.7321 65.6867 56.2882 65.6867 56.971V114.405C65.6867 115.088 66.2598 115.644 66.9635 115.644H78.1278C78.8315 115.644 79.4046 115.088 79.4046 114.405V80.2221C79.4046 79.7856 79.985 79.6096 80.2389 79.9686L105.469 115.109C105.709 115.44 106.101 115.637 106.514 115.637H120.312Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M128.805 55.7321C129.45 55.7321 129.976 56.2969 129.976 56.9905V108.813C129.976 109.506 129.45 110.071 128.805 110.071H125.752C125.379 110.071 125.027 109.878 124.807 109.549L117.624 98.8957C117.477 98.6812 117.397 98.4238 117.397 98.1593V56.9905C117.404 56.2969 117.93 55.7321 118.575 55.7321H128.805Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3059 55.7321C13.002 55.7321 13.5688 56.2885 13.5688 56.9716V85.0996C13.5688 94.269 20.3568 101.783 29.484 102.424C30.1872 102.474 30.7541 103.03 30.7469 103.72L30.6321 114.439C30.6249 115.115 30.058 115.671 29.3692 115.643C12.5642 115.016 0 101.812 0 85.0996V56.9716C0 56.2885 0.566862 55.7321 1.26288 55.7321H12.3059Z" fill="#101725"/><path d="M45.1147 102.331H37.613C36.9099 102.331 36.3373 102.887 36.3373 103.57V114.405C36.3373 115.088 36.9099 115.644 37.613 115.644H58.8207C59.5237 115.644 60.0963 115.088 60.0963 114.405V56.9712C60.0963 56.2883 59.5237 55.7321 58.8207 55.7321H47.666C46.9629 55.7321 46.3903 56.2883 46.3903 56.9712V101.092C46.3903 101.775 45.8177 102.331 45.1147 102.331Z" fill="#101725"/><path d="M78.577 36.5608H76.4237L67.9793 25.8061V36.5608H65.5093V21.6178H67.6626L76.0859 32.3304V21.6178H78.577V36.5608Z" fill="#101725"/><path d="M61.8851 34.6666C60.534 36.1188 58.2118 36.8133 55.9107 36.8133C51.2029 36.8133 47.804 33.4459 47.804 29.0893C47.804 24.7748 51.1396 21.3653 55.6573 21.3653C58.1062 21.3653 60.0696 22.1861 61.4629 23.6172L59.774 25.3641C58.8029 24.3959 57.4729 23.7435 55.6573 23.7435C52.5118 23.7435 50.2951 26.1217 50.2951 29.0893C50.2951 32.12 52.4696 34.4351 55.8896 34.4351C57.2407 34.4351 58.634 34.1615 59.4784 33.4669V30.1416H55.7207V27.8265H61.8851V34.6666Z" fill="#101725"/><path d="M41.977 36.5608V21.6178H44.447V36.5608H41.977Z" fill="#101725"/><path d="M28.3277 34.1194L30.2699 32.583C31.051 33.7826 32.2966 34.4982 33.7532 34.4982C35.1677 34.4982 36.181 33.7616 36.181 32.6461C36.181 31.5938 35.4843 30.8993 34.0488 30.3731L32.4021 29.7838C30.0377 28.9209 28.8766 27.616 28.8766 25.5745C28.8766 22.9648 30.9455 21.3653 33.7321 21.3653C35.5899 21.3653 37.1732 22.1019 38.271 23.4068L36.561 25.0694C35.8221 24.1855 34.8932 23.6804 33.7321 23.6804C32.4655 23.6804 31.3677 24.3328 31.3677 25.4062C31.3677 26.5006 32.0855 26.9846 33.6477 27.5529L35.1677 28.1211C37.3632 28.942 38.6932 30.2679 38.6932 32.4988C38.6721 35.1085 36.6243 36.8133 33.6899 36.8133C31.2621 36.8133 29.2355 35.7189 28.3277 34.1194Z" fill="#101725"/><path d="M17.0221 36.5608V21.6178H26.0366V23.975H19.4921V27.8055H24.7699V30.1627H19.4921V34.2036H26.0366V36.5608H17.0221Z" fill="#101725"/><path d="M1.21522 36.5608V21.6178H5.81744C10.2719 21.6178 13.6708 24.859 13.6708 29.0893C13.6708 33.3196 10.2719 36.5608 5.81744 36.5608H1.21522ZM3.68522 34.2667H5.81744C9.02633 34.2667 11.1585 32.0147 11.1585 29.0893C11.1585 26.1639 9.02633 23.9119 5.81744 23.9119H3.68522V34.2667Z" fill="#101725"/><path d="M62.1472 7.72402C62.1472 3.40951 65.5883 0 69.8949 0C72.8294 0 75.3205 1.49429 76.6505 3.78834L74.5183 5.00903C73.5472 3.40951 71.9638 2.37824 69.8949 2.37824C66.9183 2.37824 64.6383 4.75648 64.6383 7.72402C64.6383 10.6916 66.9183 13.0698 69.8949 13.0698C71.9638 13.0698 73.5472 12.0385 74.5183 10.439L76.6505 11.6597C75.3205 13.9537 72.8294 15.448 69.8949 15.448C65.5883 15.448 62.1472 12.0385 62.1472 7.72402Z" fill="#101725"/><path d="M56.3202 15.1955V0.252575H58.7902V15.1955H56.3202Z" fill="#101725"/><path d="M44.1005 15.1955V0.252575H46.5705V12.8383H53.4316V15.1955H44.1005Z" fill="#101725"/><path d="M30.149 15.1955V0.252575H35.3212C38.0023 0.252575 39.7968 2.14675 39.7968 4.37766C39.7968 5.70358 39.2268 6.65067 38.4034 7.26101C39.7756 7.82926 40.8101 8.96577 40.8101 10.8178C40.8101 13.3013 38.8256 15.1955 35.9756 15.1955H30.149ZM32.619 6.54544H35.1945C36.5456 6.54544 37.369 5.66149 37.369 4.52499C37.369 3.43058 36.5456 2.50454 35.1945 2.50454H32.619V6.54544ZM32.619 12.9435H35.9123C37.4956 12.9435 38.4034 12.0385 38.4034 10.7968C38.4034 9.57611 37.5168 8.65007 35.9123 8.65007H32.619V12.9435Z" fill="#101725"/><path d="M26.0185 9.3446C26.0185 13.0698 23.5485 15.448 20.0652 15.448C16.5396 15.448 14.0907 13.0698 14.0907 9.3446V0.252575H16.5607V9.38669C16.5607 11.7228 17.954 13.0698 20.0652 13.0698C22.1552 13.0698 23.5485 11.7228 23.5485 9.38669V0.252575H26.0185V9.3446Z" fill="#101725"/><path d="M5.98633 0.252575C9.06855 0.252575 11.1797 2.37826 11.1797 5.13533C11.1797 7.8924 9.06855 10.0181 5.98633 10.0181H3.68522V15.1955H1.21522V0.252575H5.98633ZM5.96522 7.70299C7.71744 7.70299 8.75188 6.58753 8.75188 5.13533C8.75188 3.68313 7.71744 2.56767 5.96522 2.56767H3.68522V7.70299H5.96522Z" fill="#101725"/></svg>
         </div>
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn btn-primary" onclick="openForGmail()">Usar en Gmail</button>
+      <button class="btn btn-primary" onclick="copySignature()">Copiar para Gmail</button>
       <button class="btn" onclick="downloadPNG()">Descargar PNG</button>
       <span class="copy-feedback" id="copy-feedback"></span>
     </div>
 
     <p class="instructions">
-      <strong>Usar en Gmail</strong> abre la firma sola en una nueva pestaña — selecciona todo (⌘A), copia (⌘C) y pégala en Configuración → Firma de Gmail. <strong>Descargar PNG</strong> genera una imagen de alta resolución.
+      <strong>Copiar para Gmail</strong> copia la firma al portapapeles — ve a Gmail → Configuración ⚙ → Ver toda la configuración → Firma y pega con <strong>⌘V</strong>. <strong>Descargar PNG</strong> genera una imagen de alta resolución.
     </p>
   </main>
 
@@ -474,7 +653,12 @@
     personSelect.appendChild(opt);
   });
 
+  function updateSelectEmpty(sel) {
+    sel.classList.toggle('empty', sel.value === '');
+  }
+
   personSelect.addEventListener('change', () => {
+    updateSelectEmpty(personSelect);
     const idx = personSelect.value;
     if (idx === '') return;
     const member = TEAM[parseInt(idx)];
@@ -482,8 +666,13 @@
     document.getElementById('inp-role').value = member.title;
     updatePreview();
   });
+  updateSelectEmpty(personSelect);
 
-  const SVG_LOGO = `<svg width="96" height="48" viewBox="0 0 230 116" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M188.901 76.6317C189.547 76.6317 190.072 77.1748 190.072 77.8418V114.434C190.072 115.101 189.547 115.644 188.901 115.644H178.664C178.019 115.644 177.494 115.101 177.494 114.434V77.8418C177.494 77.1748 178.019 76.6317 178.664 76.6317H188.901Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M209.735 76.6317C210.452 76.6317 211.036 77.1748 211.036 77.8418V114.434C211.036 115.101 210.452 115.644 209.735 115.644H198.361C197.644 115.644 197.06 115.101 197.06 114.434V77.8418C197.06 77.1748 197.644 76.6317 198.361 76.6317H209.735Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M229.205 67.1047C229.205 67.748 228.663 68.2718 227.999 68.2718H159.134C158.469 68.2718 157.928 67.748 157.928 67.1047V56.8992C157.928 56.256 158.469 55.7321 159.134 55.7321H227.999C228.663 55.7321 229.205 56.256 229.205 56.8992V67.1047Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M151.593 43.53C152.169 43.7793 152.468 44.4097 152.283 44.9985L150.938 49.2931C150.775 49.8056 150.291 50.1589 149.744 50.1589H138.215C137.376 50.1589 136.771 49.3692 137.02 48.5865L139.716 39.8796C139.936 39.18 140.733 38.8198 141.423 39.1176L151.6 43.53H151.593Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M149.639 55.7321C150.356 55.7321 150.94 56.2882 150.94 56.971V114.405C150.94 115.088 150.356 115.644 149.639 115.644H138.265C137.548 115.644 136.964 115.088 136.964 114.405V56.971C136.964 56.2882 137.548 55.7321 138.265 55.7321H149.639Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M120.312 115.637C121.342 115.637 121.951 114.511 121.356 113.687L79.9559 56.4853C79.615 56.0137 79.0564 55.7321 78.4615 55.7321H66.9635C66.2598 55.7321 65.6867 56.2882 65.6867 56.971V114.405C65.6867 115.088 66.2598 115.644 66.9635 115.644H78.1278C78.8315 115.644 79.4046 115.088 79.4046 114.405V80.2221C79.4046 79.7856 79.985 79.6096 80.2389 79.9686L105.469 115.109C105.709 115.44 106.101 115.637 106.514 115.637H120.312Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M128.805 55.7321C129.45 55.7321 129.976 56.2969 129.976 56.9905V108.813C129.976 109.506 129.45 110.071 128.805 110.071H125.752C125.379 110.071 125.027 109.878 124.807 109.549L117.624 98.8957C117.477 98.6812 117.397 98.4238 117.397 98.1593V56.9905C117.404 56.2969 117.93 55.7321 118.575 55.7321H128.805Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3059 55.7321C13.002 55.7321 13.5688 56.2885 13.5688 56.9716V85.0996C13.5688 94.269 20.3568 101.783 29.484 102.424C30.1872 102.474 30.7541 103.03 30.7469 103.72L30.6321 114.439C30.6249 115.115 30.058 115.671 29.3692 115.643C12.5642 115.016 0 101.812 0 85.0996V56.9716C0 56.2885 0.566862 55.7321 1.26288 55.7321H12.3059Z" fill="#101725"/><path d="M45.1147 102.331H37.613C36.9099 102.331 36.3373 102.887 36.3373 103.57V114.405C36.3373 115.088 36.9099 115.644 37.613 115.644H58.8207C59.5237 115.644 60.0963 115.088 60.0963 114.405V56.9712C60.0963 56.2883 59.5237 55.7321 58.8207 55.7321H47.666C46.9629 55.7321 46.3903 56.2883 46.3903 56.9712V101.092C46.3903 101.775 45.8177 102.331 45.1147 102.331Z" fill="#101725"/><path d="M78.577 36.5608H76.4237L67.9793 25.8061V36.5608H65.5093V21.6178H67.6626L76.0859 32.3304V21.6178H78.577V36.5608Z" fill="#101725"/><path d="M61.8851 34.6666C60.534 36.1188 58.2118 36.8133 55.9107 36.8133C51.2029 36.8133 47.804 33.4459 47.804 29.0893C47.804 24.7748 51.1396 21.3653 55.6573 21.3653C58.1062 21.3653 60.0696 22.1861 61.4629 23.6172L59.774 25.3641C58.8029 24.3959 57.4729 23.7435 55.6573 23.7435C52.5118 23.7435 50.2951 26.1217 50.2951 29.0893C50.2951 32.12 52.4696 34.4351 55.8896 34.4351C57.2407 34.4351 58.634 34.1615 59.4784 33.4669V30.1416H55.7207V27.8265H61.8851V34.6666Z" fill="#101725"/><path d="M41.977 36.5608V21.6178H44.447V36.5608H41.977Z" fill="#101725"/><path d="M28.3277 34.1194L30.2699 32.583C31.051 33.7826 32.2966 34.4982 33.7532 34.4982C35.1677 34.4982 36.181 33.7616 36.181 32.6461C36.181 31.5938 35.4843 30.8993 34.0488 30.3731L32.4021 29.7838C30.0377 28.9209 28.8766 27.616 28.8766 25.5745C28.8766 22.9648 30.9455 21.3653 33.7321 21.3653C35.5899 21.3653 37.1732 22.1019 38.271 23.4068L36.561 25.0694C35.8221 24.1855 34.8932 23.6804 33.7321 23.6804C32.4655 23.6804 31.3677 24.3328 31.3677 25.4062C31.3677 26.5006 32.0855 26.9846 33.6477 27.5529L35.1677 28.1211C37.3632 28.942 38.6932 30.2679 38.6932 32.4988C38.6721 35.1085 36.6243 36.8133 33.6899 36.8133C31.2621 36.8133 29.2355 35.7189 28.3277 34.1194Z" fill="#101725"/><path d="M17.0221 36.5608V21.6178H26.0366V23.975H19.4921V27.8055H24.7699V30.1627H19.4921V34.2036H26.0366V36.5608H17.0221Z" fill="#101725"/><path d="M1.21522 36.5608V21.6178H5.81744C10.2719 21.6178 13.6708 24.859 13.6708 29.0893C13.6708 33.3196 10.2719 36.5608 5.81744 36.5608H1.21522ZM3.68522 34.2667H5.81744C9.02633 34.2667 11.1585 32.0147 11.1585 29.0893C11.1585 26.1639 9.02633 23.9119 5.81744 23.9119H3.68522V34.2667Z" fill="#101725"/><path d="M62.1472 7.72402C62.1472 3.40951 65.5883 0 69.8949 0C72.8294 0 75.3205 1.49429 76.6505 3.78834L74.5183 5.00903C73.5472 3.40951 71.9638 2.37824 69.8949 2.37824C66.9183 2.37824 64.6383 4.75648 64.6383 7.72402C64.6383 10.6916 66.9183 13.0698 69.8949 13.0698C71.9638 13.0698 73.5472 12.0385 74.5183 10.439L76.6505 11.6597C75.3205 13.9537 72.8294 15.448 69.8949 15.448C65.5883 15.448 62.1472 12.0385 62.1472 7.72402Z" fill="#101725"/><path d="M56.3202 15.1955V0.252575H58.7902V15.1955H56.3202Z" fill="#101725"/><path d="M44.1005 15.1955V0.252575H46.5705V12.8383H53.4316V15.1955H44.1005Z" fill="#101725"/><path d="M30.149 15.1955V0.252575H35.3212C38.0023 0.252575 39.7968 2.14675 39.7968 4.37766C39.7968 5.70358 39.2268 6.65067 38.4034 7.26101C39.7756 7.82926 40.8101 8.96577 40.8101 10.8178C40.8101 13.3013 38.8256 15.1955 35.9756 15.1955H30.149ZM32.619 6.54544H35.1945C36.5456 6.54544 37.369 5.66149 37.369 4.52499C37.369 3.43058 36.5456 2.50454 35.1945 2.50454H32.619V6.54544ZM32.619 12.9435H35.9123C37.4956 12.9435 38.4034 12.0385 38.4034 10.7968C38.4034 9.57611 37.5168 8.65007 35.9123 8.65007H32.619V12.9435Z" fill="#101725"/><path d="M26.0185 9.3446C26.0185 13.0698 23.5485 15.448 20.0652 15.448C16.5396 15.448 14.0907 13.0698 14.0907 9.3446V0.252575H16.5607V9.38669C16.5607 11.7228 17.954 13.0698 20.0652 13.0698C22.1552 13.0698 23.5485 11.7228 23.5485 9.38669V0.252575H26.0185V9.3446Z" fill="#101725"/><path d="M5.98633 0.252575C9.06855 0.252575 11.1797 2.37826 11.1797 5.13533C11.1797 7.8924 9.06855 10.0181 5.98633 10.0181H3.68522V15.1955H1.21522V0.252575H5.98633ZM5.96522 7.70299C7.71744 7.70299 8.75188 6.58753 8.75188 5.13533C8.75188 3.68313 7.71744 2.56767 5.96522 2.56767H3.68522V7.70299H5.96522Z" fill="#101725"/></svg>`;
+  const countrySelect = document.getElementById('inp-country');
+  countrySelect.addEventListener('change', () => { updateSelectEmpty(countrySelect); });
+  updateSelectEmpty(countrySelect);
+
+  const SVG_LOGO = `<svg width="115" height="58" viewBox="0 0 230 116" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M188.901 76.6317C189.547 76.6317 190.072 77.1748 190.072 77.8418V114.434C190.072 115.101 189.547 115.644 188.901 115.644H178.664C178.019 115.644 177.494 115.101 177.494 114.434V77.8418C177.494 77.1748 178.019 76.6317 178.664 76.6317H188.901Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M209.735 76.6317C210.452 76.6317 211.036 77.1748 211.036 77.8418V114.434C211.036 115.101 210.452 115.644 209.735 115.644H198.361C197.644 115.644 197.06 115.101 197.06 114.434V77.8418C197.06 77.1748 197.644 76.6317 198.361 76.6317H209.735Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M229.205 67.1047C229.205 67.748 228.663 68.2718 227.999 68.2718H159.134C158.469 68.2718 157.928 67.748 157.928 67.1047V56.8992C157.928 56.256 158.469 55.7321 159.134 55.7321H227.999C228.663 55.7321 229.205 56.256 229.205 56.8992V67.1047Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M151.593 43.53C152.169 43.7793 152.468 44.4097 152.283 44.9985L150.938 49.2931C150.775 49.8056 150.291 50.1589 149.744 50.1589H138.215C137.376 50.1589 136.771 49.3692 137.02 48.5865L139.716 39.8796C139.936 39.18 140.733 38.8198 141.423 39.1176L151.6 43.53H151.593Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M149.639 55.7321C150.356 55.7321 150.94 56.2882 150.94 56.971V114.405C150.94 115.088 150.356 115.644 149.639 115.644H138.265C137.548 115.644 136.964 115.088 136.964 114.405V56.971C136.964 56.2882 137.548 55.7321 138.265 55.7321H149.639Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M120.312 115.637C121.342 115.637 121.951 114.511 121.356 113.687L79.9559 56.4853C79.615 56.0137 79.0564 55.7321 78.4615 55.7321H66.9635C66.2598 55.7321 65.6867 56.2882 65.6867 56.971V114.405C65.6867 115.088 66.2598 115.644 66.9635 115.644H78.1278C78.8315 115.644 79.4046 115.088 79.4046 114.405V80.2221C79.4046 79.7856 79.985 79.6096 80.2389 79.9686L105.469 115.109C105.709 115.44 106.101 115.637 106.514 115.637H120.312Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M128.805 55.7321C129.45 55.7321 129.976 56.2969 129.976 56.9905V108.813C129.976 109.506 129.45 110.071 128.805 110.071H125.752C125.379 110.071 125.027 109.878 124.807 109.549L117.624 98.8957C117.477 98.6812 117.397 98.4238 117.397 98.1593V56.9905C117.404 56.2969 117.93 55.7321 118.575 55.7321H128.805Z" fill="#101725"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3059 55.7321C13.002 55.7321 13.5688 56.2885 13.5688 56.9716V85.0996C13.5688 94.269 20.3568 101.783 29.484 102.424C30.1872 102.474 30.7541 103.03 30.7469 103.72L30.6321 114.439C30.6249 115.115 30.058 115.671 29.3692 115.643C12.5642 115.016 0 101.812 0 85.0996V56.9716C0 56.2885 0.566862 55.7321 1.26288 55.7321H12.3059Z" fill="#101725"/><path d="M45.1147 102.331H37.613C36.9099 102.331 36.3373 102.887 36.3373 103.57V114.405C36.3373 115.088 36.9099 115.644 37.613 115.644H58.8207C59.5237 115.644 60.0963 115.088 60.0963 114.405V56.9712C60.0963 56.2883 59.5237 55.7321 58.8207 55.7321H47.666C46.9629 55.7321 46.3903 56.2883 46.3903 56.9712V101.092C46.3903 101.775 45.8177 102.331 45.1147 102.331Z" fill="#101725"/><path d="M78.577 36.5608H76.4237L67.9793 25.8061V36.5608H65.5093V21.6178H67.6626L76.0859 32.3304V21.6178H78.577V36.5608Z" fill="#101725"/><path d="M61.8851 34.6666C60.534 36.1188 58.2118 36.8133 55.9107 36.8133C51.2029 36.8133 47.804 33.4459 47.804 29.0893C47.804 24.7748 51.1396 21.3653 55.6573 21.3653C58.1062 21.3653 60.0696 22.1861 61.4629 23.6172L59.774 25.3641C58.8029 24.3959 57.4729 23.7435 55.6573 23.7435C52.5118 23.7435 50.2951 26.1217 50.2951 29.0893C50.2951 32.12 52.4696 34.4351 55.8896 34.4351C57.2407 34.4351 58.634 34.1615 59.4784 33.4669V30.1416H55.7207V27.8265H61.8851V34.6666Z" fill="#101725"/><path d="M41.977 36.5608V21.6178H44.447V36.5608H41.977Z" fill="#101725"/><path d="M28.3277 34.1194L30.2699 32.583C31.051 33.7826 32.2966 34.4982 33.7532 34.4982C35.1677 34.4982 36.181 33.7616 36.181 32.6461C36.181 31.5938 35.4843 30.8993 34.0488 30.3731L32.4021 29.7838C30.0377 28.9209 28.8766 27.616 28.8766 25.5745C28.8766 22.9648 30.9455 21.3653 33.7321 21.3653C35.5899 21.3653 37.1732 22.1019 38.271 23.4068L36.561 25.0694C35.8221 24.1855 34.8932 23.6804 33.7321 23.6804C32.4655 23.6804 31.3677 24.3328 31.3677 25.4062C31.3677 26.5006 32.0855 26.9846 33.6477 27.5529L35.1677 28.1211C37.3632 28.942 38.6932 30.2679 38.6932 32.4988C38.6721 35.1085 36.6243 36.8133 33.6899 36.8133C31.2621 36.8133 29.2355 35.7189 28.3277 34.1194Z" fill="#101725"/><path d="M17.0221 36.5608V21.6178H26.0366V23.975H19.4921V27.8055H24.7699V30.1627H19.4921V34.2036H26.0366V36.5608H17.0221Z" fill="#101725"/><path d="M1.21522 36.5608V21.6178H5.81744C10.2719 21.6178 13.6708 24.859 13.6708 29.0893C13.6708 33.3196 10.2719 36.5608 5.81744 36.5608H1.21522ZM3.68522 34.2667H5.81744C9.02633 34.2667 11.1585 32.0147 11.1585 29.0893C11.1585 26.1639 9.02633 23.9119 5.81744 23.9119H3.68522V34.2667Z" fill="#101725"/><path d="M62.1472 7.72402C62.1472 3.40951 65.5883 0 69.8949 0C72.8294 0 75.3205 1.49429 76.6505 3.78834L74.5183 5.00903C73.5472 3.40951 71.9638 2.37824 69.8949 2.37824C66.9183 2.37824 64.6383 4.75648 64.6383 7.72402C64.6383 10.6916 66.9183 13.0698 69.8949 13.0698C71.9638 13.0698 73.5472 12.0385 74.5183 10.439L76.6505 11.6597C75.3205 13.9537 72.8294 15.448 69.8949 15.448C65.5883 15.448 62.1472 12.0385 62.1472 7.72402Z" fill="#101725"/><path d="M56.3202 15.1955V0.252575H58.7902V15.1955H56.3202Z" fill="#101725"/><path d="M44.1005 15.1955V0.252575H46.5705V12.8383H53.4316V15.1955H44.1005Z" fill="#101725"/><path d="M30.149 15.1955V0.252575H35.3212C38.0023 0.252575 39.7968 2.14675 39.7968 4.37766C39.7968 5.70358 39.2268 6.65067 38.4034 7.26101C39.7756 7.82926 40.8101 8.96577 40.8101 10.8178C40.8101 13.3013 38.8256 15.1955 35.9756 15.1955H30.149ZM32.619 6.54544H35.1945C36.5456 6.54544 37.369 5.66149 37.369 4.52499C37.369 3.43058 36.5456 2.50454 35.1945 2.50454H32.619V6.54544ZM32.619 12.9435H35.9123C37.4956 12.9435 38.4034 12.0385 38.4034 10.7968C38.4034 9.57611 37.5168 8.65007 35.9123 8.65007H32.619V12.9435Z" fill="#101725"/><path d="M26.0185 9.3446C26.0185 13.0698 23.5485 15.448 20.0652 15.448C16.5396 15.448 14.0907 13.0698 14.0907 9.3446V0.252575H16.5607V9.38669C16.5607 11.7228 17.954 13.0698 20.0652 13.0698C22.1552 13.0698 23.5485 11.7228 23.5485 9.38669V0.252575H26.0185V9.3446Z" fill="#101725"/><path d="M5.98633 0.252575C9.06855 0.252575 11.1797 2.37826 11.1797 5.13533C11.1797 7.8924 9.06855 10.0181 5.98633 10.0181H3.68522V15.1955H1.21522V0.252575H5.98633ZM5.96522 7.70299C7.71744 7.70299 8.75188 6.58753 8.75188 5.13533C8.75188 3.68313 7.71744 2.56767 5.96522 2.56767H3.68522V7.70299H5.96522Z" fill="#101725"/></svg>`;
 
   function getValues() {
     return {
@@ -610,30 +799,84 @@ ${html}
     }
   }
 
-  async function copySignature() {
-    const v = getValues();
-    const html = buildSignatureHTML(v);
+  // Converts the inline SVG logo to a base64 PNG for email
+  function logoToPNG() {
+    return new Promise((resolve) => {
+      const svgEl = document.querySelector('.sig-logo-cell svg');
+      const svgStr = new XMLSerializer().serializeToString(svgEl);
+      const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      const img = new Image();
+      img.onload = () => {
+        const scale = 2;
+        const canvas = document.createElement('canvas');
+        canvas.width = 115 * scale;
+        canvas.height = 58 * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.drawImage(img, 0, 0, 115, 58);
+        URL.revokeObjectURL(url);
+        resolve(canvas.toDataURL('image/png'));
+      };
+      img.src = url;
+    });
+  }
 
+  // Renders the name element (Reckless font) as a PNG via html2canvas
+  async function nameToPNG() {
+    const nameEl = document.getElementById('prev-name');
+    const canvas = await html2canvas(nameEl, {
+      scale: 3,
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      logging: false,
+    });
+    return {
+      png: canvas.toDataURL('image/png'),
+      w: Math.round(canvas.width / 3),
+      h: Math.round(canvas.height / 3),
+    };
+  }
+
+  // Builds Gmail-safe HTML: name + logo as PNG, rest as Arial
+  async function buildGmailHTML(v) {
+    const [logoPng, nameData] = await Promise.all([logoToPNG(), nameToPNG()]);
+
+    const metaParts = [v.role, v.country].filter(Boolean);
+    const metaRow = metaParts.length
+      ? `<span style="display:block;font-size:12px;line-height:1.8;color:#101725;font-family:Arial,Helvetica,sans-serif;">${metaParts.join(' — ')}</span>`
+      : '';
+
+    const emailRow = (v.email
+      ? `<a href="mailto:${v.email}" style="display:block;color:#101725;text-decoration:none;font-size:12px;font-family:Arial,Helvetica,sans-serif;">${v.email}</a>`
+      : '')
+      + `<a href="https://unit.la" style="display:block;color:#101725;text-decoration:none;font-size:12px;font-family:Arial,Helvetica,sans-serif;">unit.la</a>`;
+
+    return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+  <tr>
+    <td style="vertical-align:middle;padding-right:28px;border-right:1px solid #9E9BB9;">
+      <img src="${nameData.png}" width="${nameData.w}" height="${nameData.h}" alt="${v.name}" style="display:block;border:0;width:${nameData.w}px;height:${nameData.h}px;margin-bottom:8px;">
+      ${metaRow}${emailRow}
+    </td>
+    <td style="vertical-align:middle;padding-left:28px;">
+      <img src="${logoPng}" width="115" height="58" alt="Unit Public Design" style="display:block;border:0;width:115px;height:58px;">
+    </td>
+  </tr>
+</table>`;
+  }
+
+  async function copySignature() {
+    showFeedback('Generando firma…');
     try {
+      const v = getValues();
+      const html = await buildGmailHTML(v);
       const blob = new Blob([html], { type: 'text/html' });
       const item = new ClipboardItem({ 'text/html': blob });
       await navigator.clipboard.write([item]);
-      showFeedback('Firma copiada');
-    } catch {
-      // fallback
-      copySignatureHTML();
-    }
-  }
-
-  async function copySignatureHTML() {
-    const v = getValues();
-    const html = buildSignatureHTML(v);
-
-    try {
-      await navigator.clipboard.writeText(html);
-      showFeedback('HTML copiado');
-    } catch {
-      showFeedback('No se pudo copiar. Intenta en un navegador.');
+      showFeedback('¡Firma copiada!');
+    } catch (e) {
+      showFeedback('Error al copiar');
+      console.error(e);
     }
   }
 
