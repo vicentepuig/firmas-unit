@@ -799,7 +799,27 @@ ${html}
     }
   }
 
-  // Renders el logo SVG a PNG a tamaño exacto de display
+  // Extrae la fuente Reckless embebida del CSS de la página
+  function getRecklessFontData() {
+    try {
+      for (const sheet of document.styleSheets) {
+        for (const rule of sheet.cssRules) {
+          if (rule.type === CSSRule.FONT_FACE_RULE) {
+            const fam = rule.style.fontFamily.replace(/['"]/g, '').trim();
+            const wt  = rule.style.fontWeight;
+            if (fam === 'Reckless' && String(wt) === '300') {
+              const src = rule.style.src || rule.style.getPropertyValue('src');
+              const m = src.match(/url\(["']?(data:[^"')]+)["']?\)/);
+              if (m) return m[1];
+            }
+          }
+        }
+      }
+    } catch(e) {}
+    return null;
+  }
+
+  // Convierte el logo SVG a PNG a tamaño exacto de display
   function logoToPNG() {
     return new Promise((resolve) => {
       const svgEl = document.querySelector('.sig-logo-cell svg');
@@ -819,32 +839,19 @@ ${html}
     });
   }
 
-  // Renderiza el nombre a 2x y luego reduce a 1x (supersampling) para mayor nitidez
-  async function nameToPNG() {
-    const nameEl = document.getElementById('prev-name');
-    // Renderizar a 2x para mejor antialiasing
-    const canvas2x = await html2canvas(nameEl, {
-      scale: 2,
-      backgroundColor: '#ffffff',
-      useCORS: true,
-      logging: false,
-    });
-    // Reducir a 1x (tamaño exacto de display)
-    const w = Math.round(canvas2x.width / 2);
-    const h = Math.round(canvas2x.height / 2);
-    const canvas1x = document.createElement('canvas');
-    canvas1x.width = w;
-    canvas1x.height = h;
-    const ctx = canvas1x.getContext('2d');
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(canvas2x, 0, 0, w, h);
-    return { png: canvas1x.toDataURL('image/png'), w, h };
-  }
-
-  // Construye HTML para Gmail: nombre y logo como PNG, resto en Arial
+  // Construye HTML para Gmail:
+  // - Nombre como texto HTML con fuente embebida (Apple Mail carga Reckless, Gmail usa Georgia)
+  // - Logo como PNG a tamaño exacto
   async function buildGmailHTML(v) {
-    const [logoPng, nameData] = await Promise.all([logoToPNG(), nameToPNG()]);
+    const logoPng = await logoToPNG();
+
+    // Intentar embeber Reckless — Apple Mail lo usa, Gmail lo ignora pero Georgia es el fallback
+    const fontData = getRecklessFontData();
+    const fontStyle = fontData
+      ? `<style>@font-face{font-family:'Reckless';src:url('${fontData}') format('opentype');font-weight:300;}</style>`
+      : '';
+
+    const safe = v.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
     const metaParts = [v.role, v.country].filter(Boolean);
     const metaRow = metaParts.length
@@ -856,10 +863,10 @@ ${html}
       : '')
       + `<a href="https://unit.la" style="display:block;color:#101725;text-decoration:none;font-size:12px;font-family:Arial,Helvetica,sans-serif;">unit.la</a>`;
 
-    return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+    return `${fontStyle}<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
   <tr>
     <td style="vertical-align:middle;padding-right:28px;border-right:1px solid #9E9BB9;">
-      <img src="${nameData.png}" width="${nameData.w}" height="${nameData.h}" alt="${v.name}" style="display:block;border:0;width:${nameData.w}px;height:${nameData.h}px;margin-bottom:8px;">
+      <span style="display:block;font-family:'Reckless',Georgia,'Times New Roman',serif;font-weight:300;font-size:28px;line-height:1.15;color:#2B223A;margin-bottom:8px;white-space:nowrap;">${safe}</span>
       ${metaRow}${emailRow}
     </td>
     <td style="vertical-align:middle;padding-left:28px;">
